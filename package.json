@@ -31,7 +31,8 @@
         "sequelize": "^6.3.5",
         "serve": "^11.3.2",
         "socket.io": "^2.3.0",
-        "typescript": "^4.0.3"
+        "typescript": "^3.9.10",
+
     },
     "scripts": {
         "dev": "react-scripts start",
