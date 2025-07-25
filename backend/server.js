@@ -18,18 +18,18 @@ app.use(express.urlencoded({ extended: true }));
 // Mount API routes
 app.use("/api", require("./api"));
 
-// Serve frontend only in production
-const isProduction = process.env.NODE_ENV === "production";
-if (isProduction) {
-  const buildPath = path.join(__dirname, "../build");
-  app.use(express.static(buildPath));
+// Serve frontend if built
+const frontendPath = path.join(__dirname, "../client/build"); // Adjust this path based on your structure
 
-  app.get("*", (req, res) =>
-    res.sendFile(path.join(buildPath, "index.html"))
-  );
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(frontendPath));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
+  });
 }
 
-// Test route
+// Health check
 app.get("/ping", (req, res) => res.send("pong"));
 
 // Start server
