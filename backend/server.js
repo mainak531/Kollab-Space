@@ -1,5 +1,5 @@
 const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, "../.env") }); //For process.env variables
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const express = require("express");
 const app = express();
 const http = require("http");
@@ -10,21 +10,20 @@ socketIoServer(server);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/", express.static(path.join(__dirname, "../build")));
 app.use("/api", require("./api"));
 
-//For testing purpose
-app.get("/ping", function (req, res) {
-  res.send("pong");
-});
+app.use(express.static(path.join(__dirname, "../build")));
 
-app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "../build", "index.html"));
-});
+app.get("/ping", (req, res) => res.send("pong"));
 
-const PORT = process.env.PORT || 7484; // change to another port
+// Handle all remaining routes with React
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname, "../build", "index.html"))
+);
 
-
+const PORT = process.env.PORT || 7484;
 server.listen(PORT, () => {
   console.log("Server started on " + PORT);
+
+
 });
